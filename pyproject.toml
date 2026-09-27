@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "helpdesk-toolkit"
+version = "1.0.0"
+description = "Command-line diagnostics and automation for everyday IT help desk tasks."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Ian Guidry" }]
+dependencies = ["psutil>=5.9", "rich>=13.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+helpdesk = "helpdesk_toolkit.cli:main"
+
+[tool.setuptools]
+packages = ["helpdesk_toolkit"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 135
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "BLE"]
+ignore = ["S603", "S607"]  # subprocess calls use fixed, trusted commands (ping/route/ip)
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
