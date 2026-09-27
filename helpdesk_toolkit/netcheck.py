@@ -64,9 +64,12 @@ def get_default_gateway() -> str | None:
 
 def ping(host: str, timeout_s: int = 2) -> tuple[bool, float | None]:
     """Ping a host once. Returns (reachable, round-trip milliseconds)."""
-    if platform.system() == "Windows":
-        command = ["ping", "-n", "1", "-w", str(timeout_s * 1000), host]
-    else:
+           system = platform.system()
+       if system == "Windows":
+           command = ["ping", "-n", "1", "-w", str(timeout_s * 1000), host]  # -w is milliseconds
+       elif system == "Darwin":
+           command = ["ping", "-c", "1", "-t", str(timeout_s), host]  # macOS: -W is ms, -t is seconds
+       else:
         command = ["ping", "-c", "1", "-W", str(timeout_s), host]
     start = time.perf_counter()
     try:
